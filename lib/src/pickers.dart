@@ -342,8 +342,11 @@ class _MonthButton extends StatelessWidget {
 
     final now = DateTime.now();
     final isThisMonth = date.month == now.month && date.year == now.year;
+    final hasMonthElapsed = now.year > date.year ||
+        (now.year == date.year && now.month > date.month);
 
     return _Button(
+      hasMonthElapsed: hasMonthElapsed,
       label: DateFormat.MMM(locale).format(date),
       isEnabled: isEnabled,
       isHighlighted: isThisMonth,
@@ -398,6 +401,7 @@ class _YearButton extends StatelessWidget {
   final SelectableMonthYearPredicate? selectableMonthYearPredicate;
 
   // --------------------------------- METHODS ---------------------------------
+
   @override
   Widget build(BuildContext context) {
     final year = firstDate.year + (page * 12) + index;
@@ -411,12 +415,14 @@ class _YearButton extends StatelessWidget {
 
     final now = DateTime.now();
     final isThisYear = year == now.year;
+    final hasMonthElapsed = now.year > date.year;
 
     return _Button(
       label: DateFormat.y(locale).format(date),
       isEnabled: isEnabled,
       isHighlighted: isThisYear,
       isSelected: isSelected,
+      hasMonthElapsed: hasMonthElapsed,
       onPressed: () => onYearSelected(DateTime(date.year)),
     );
   }
@@ -453,6 +459,7 @@ class _Button extends StatelessWidget {
     required this.isHighlighted,
     required this.isSelected,
     required this.onPressed,
+    required this.hasMonthElapsed,
   });
 
   // ---------------------------------- FIELDS ---------------------------------
@@ -461,6 +468,7 @@ class _Button extends StatelessWidget {
   final bool isHighlighted;
   final bool isSelected;
   final VoidCallback onPressed;
+  final bool hasMonthElapsed;
 
   // --------------------------------- METHODS ---------------------------------
   @override
@@ -482,7 +490,7 @@ class _Button extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(100.0),
         ),
-        textStyle: TextStyle(color: buttonText),
+        textStyle: TextStyle(color: hasMonthElapsed ? Colors.red : buttonText),
       ),
       child: Text(label),
     );
