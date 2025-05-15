@@ -474,11 +474,11 @@ class _Button extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final buttonBackground = isSelected ? colorScheme.secondary : null;
+    final buttonBackground = isSelected ? const Color(0xFF7BB847) : null;
     final buttonText = isSelected
-        ? colorScheme.onSecondary
+        ? const Color(0xFFFFFFFF)
         : isHighlighted
-            ? colorScheme.secondary
+            ? const Color(0xFF7BB847)
             : colorScheme.onSurface;
 
     return TextButton(
@@ -505,6 +505,8 @@ class _Button extends StatelessWidget {
       ..add(DiagnosticsProperty<bool>('isHighlighted', isHighlighted))
       ..add(DiagnosticsProperty<bool>('isSelected', isSelected))
       ..add(ObjectFlagProperty<VoidCallback>.has('onPressed', onPressed));
+    properties
+        .add(DiagnosticsProperty<bool>('hasMonthElapsed', hasMonthElapsed));
   }
 }
 
